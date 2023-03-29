@@ -6,7 +6,6 @@ import java.util.Random;
 
 public class Personaggio {
     
-    private Arma arma;
     private String nome;
     private int attacco;
     private int difesa;
@@ -14,6 +13,7 @@ public class Personaggio {
     private Arma[] inventario;
 
     public Personaggio(String nome, int attacco, int difesa, int puntiVita, Arma[] inventario) {
+
         this.nome = nome;
         this.attacco = attacco;
         this.difesa = difesa;
