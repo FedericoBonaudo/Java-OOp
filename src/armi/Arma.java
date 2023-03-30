@@ -10,18 +10,12 @@ public class Arma {
     private int difesaMassima;
     
     public Arma(String nome, int dannoMinimo, int dannoMassimo, int difesaMinima, int difesaMassima) {
+
+        this.nome = nome;
         this.dannoMinimo = dannoMinimo;
         this.dannoMassimo = dannoMassimo;
         this.difesaMinima = difesaMinima;
         this.difesaMassima = difesaMassima;
-    }
-
-    public void siRompe(){
-        int rottura = new Random().nextInt(10) + 1;
-        if(rottura == 10){
-            System.out.println("L'arma si è rotta! Dovrai procurartene una al più presto.");
-        }
-
     }
 
     public int getDannoMinimo() {

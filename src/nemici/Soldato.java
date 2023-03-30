@@ -1,58 +1,41 @@
 package nemici;
 import armi.Arma;
 import personaggio.Personaggio;
-import java.util.Random;;
+import java.util.Random;
 
 public class Soldato extends Nemico {
 
-    public Soldato(String classe, int forza, int resistenza, int puntiVita, Arma arma) {
-        super(classe, forza, resistenza, puntiVita);
-        this.arma = arma;
-    }
-
-    private Arma arma;
-
-    public Arma getArma() {
-        return arma;
-    }
-
-    public void setArma(Arma arma) {
-        this.arma = arma;
+    public Soldato(String classe, int forza, int resistenza, int puntiVita, Arma[] inventario) {
+        super(classe, forza, resistenza, puntiVita, inventario);
     }
 
     @Override
     public void attacca(Personaggio personaggio){
-        if(arma == null){
-            System.out.println("Il soldato non ha un'arma!");
-            return;
+
+        for(int i=0; i < getInventario().length; i++){
+            if(getInventario()[i] instanceof Arma){
+                
+                int danni = new Random().nextInt((getInventario()[i].getDannoMassimo() - getInventario()[i].getDannoMinimo())+1) + getInventario()[i].getDannoMinimo();
+                int dannoEffettivo = (danni + this.getForza()) - personaggio.getDifesa();
+        
+                if(dannoEffettivo > 0){
+                    personaggio.setPuntiVita(personaggio.getPuntiVita() - dannoEffettivo);
+                    System.out.println("-----------------------------------------------------------------------------------");
+                    System.out.println(" ");
+                    System.out.println("Il soldato riesce a colpirti con " + getInventario()[i].getNome() + ". Ti infligge " + dannoEffettivo + " danni.");
+                    System.out.println("Ti rimangono " + personaggio.getPuntiVita() + " punti vita.");
+                    System.out.println(" ");
+                    System.out.println("---------------------------------------------------------------------------------");
+                } else {
+                    System.out.println("La guardi vacilla e non ti colpisce");
+                }
+            }  else {
+                System.out.println("Il valore è null");
+            }
         }
 
-        
-        int range = arma.getDannoMassimo() - arma.getDannoMinimo() + 1;
-        int attacco = new Random().nextInt(range) + arma.getDannoMinimo();
-        int dannoEffettivo = (attacco + this.getForza()) - personaggio.getDifesa();
-    
-        if(dannoEffettivo > 0){
-            personaggio.setPuntiVita(personaggio.getPuntiVita() - dannoEffettivo);
-            System.out.println("Il soldato ti attacca con " + arma.getNome() + ". Subisci " + dannoEffettivo + " danni.");
-            System.out.println("Ti rimangono " + personaggio.getPuntiVita() + " punti vita.");
-        } else {
-            System.out.println("Il soldato vacilla e non riesce a colpirti, non perdi nessun punto vita.");
-        }
+    }
     }
 
-    @Override
-    public void parata(Personaggio personaggio){
-        
-        int range = arma.getDifesaMassima() - arma.getDifesaMinima() + 1;
-        int difesa = new Random().nextInt(range) + arma.getDifesaMinima();
-        int difesaEffettiva = difesa + this.getResistenza();
-
-        if(difesaEffettiva >= personaggio.getAttacco()){
-            System.out.println("Il soldato para con efficacia il tuo colpo! Non perde punti vita");
-        } else {
-            System.out.println("Il soldato non riesce a parare del tutto il colpo e subisce " + personaggio.getAttacco() + " danni.");
-        }
-    }
     
-}
+    

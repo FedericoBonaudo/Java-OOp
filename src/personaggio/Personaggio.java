@@ -1,10 +1,11 @@
 package personaggio;
 import nemici.Nemico;
 import armi.Arma;
+import interfaces.puoAttaccare;
 import java.util.Random;
 
 
-public class Personaggio {
+public class Personaggio implements puoAttaccare<Nemico>{
     
     private String nome;
     private int attacco;
@@ -12,19 +13,30 @@ public class Personaggio {
     private int puntiVita;
     private Arma[] inventario;
 
-    public Personaggio(String nome, int attacco, int difesa, int puntiVita, Arma[] inventario) {
+    public Personaggio(String nome, int attacco, int difesa, int puntiVita, int inventarioDimsioni) {
 
         this.nome = nome;
         this.attacco = attacco;
         this.difesa = difesa;
         this.puntiVita = puntiVita;
-        this.inventario = inventario;
+        this.inventario = new Arma[inventarioDimsioni];
     }
 
-    public void combatti(Nemico nemico){
+    public void aggiungiElemento(Arma arma){
+        int massimo = 10;
+        for(int i=0; i < massimo; i++){
+            if(inventario[i] == null){
+                inventario[i] = arma;
+            }
+        }
+    }
+
+    public void attacca(Nemico nemico){
+
 
         for(int i=0; i < inventario.length; i++){
-            if(inventario[i] instanceof Arma){
+
+            if(inventario[i] instanceof Arma && inventario[i] != null){
                 
                 int danni = new Random().nextInt((inventario[i].getDannoMassimo() - inventario[i].getDannoMinimo())+1) + inventario[i].getDannoMinimo();
                 int dannoEffettivo = (danni + this.getAttacco()) - nemico.getResistenza();
